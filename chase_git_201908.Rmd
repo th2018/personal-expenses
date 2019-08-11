@@ -1,0 +1,44 @@
+
+#read the data
+```{r}
+c<-read.csv("/Users/owner/Downloads/Chase0166_Activity_20190810_2.csv",header=T,sep=',')
+```
+
+#daily expense
+```{r}
+daily= aggregate(c$Balance ,
+                by = list( c$Posting.Date),
+                FUN = sum)
+daily$Group.1<-as.POSIXct(daily$Group.1,format="%m/%d/%Y")
+plot(daily$Group.1,daily$x )
+summary(c$Balance~c$Posting.Date)
+```
+
+
+#How many times have I visited Babette's Kitchen?
+```{r}
+
+print("How many times have I visited Babette's Kitchen?")
+length(c[grepl("BABETTE",c$Description),]$Description)
+
+```
+
+#How many times have I visited cafes (Babette's Kitchen and The Crafted Kup)?
+```{r}
+print("How many times have I visited cafes?")
+tck<-length(c[grepl("THE CRAFTED KUP",c$Description),]$Description)
+b<-length(c[grepl("BABETTE",c$Description),]$Description)
+
+print(tck+b)
+```
+
+
+#How often have I visited cafes (Babette's Kitchen and The Crafted Kup)?
+```{r}
+d<-as.POSIXct((c[1,]$Posting.Date),format="%m/%d/%Y")-as.POSIXct((c[length(c$Description),]$Posting.Date),format="%m/%d/%Y")
+dd<-as.numeric(d)/as.numeric(tck+b)
+dd
+```
+
+
+
