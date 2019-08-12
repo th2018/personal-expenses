@@ -1,4 +1,12 @@
 
+```{r}
+# R packages to be used
+library(forecast)
+library(xts)
+
+```
+
+
 #read the data
 ```{r}
 c<-read.csv("/Users/owner/Downloads/Chase0166_Activity_20190810_2.csv",header=T,sep=',')
@@ -8,11 +16,25 @@ c<-read.csv("/Users/owner/Downloads/Chase0166_Activity_20190810_2.csv",header=T,
 ```{r}
 daily= aggregate(c$Balance ,
                 by = list( c$Posting.Date),
-                FUN = sum)
+                FUN = mean)
 daily$Group.1<-as.POSIXct(daily$Group.1,format="%m/%d/%Y")
 plot(daily$Group.1,daily$x )
 summary(c$Balance~c$Posting.Date)
 ```
+
+<!-- #trend (working on it) -->
+<!-- ```{r} -->
+<!-- daily_ts<-ts(daily$x -->
+<!--            #  ,start=daily$Group.1[ length(daily$Group.1) ] -->
+<!--              ,start=1 -->
+<!--             # ,end =daily$Group.1[ 1 ] -->
+<!--            ,end=length(daily$Group.1) -->
+<!--              ,frequency=1) -->
+<!-- daily_ts -->
+
+<!-- daily_ts_HW<- HoltWinters(daily_ts, beta=FALSE, gamma=FALSE) -->
+<!-- plot(daily_ts_HW) -->
+<!-- ``` -->
 
 
 #How many times have I visited Babette's Kitchen?
