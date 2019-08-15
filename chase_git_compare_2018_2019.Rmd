@@ -1,0 +1,32 @@
+
+#read the data
+```{r}
+c<-read.csv("/Users/owner/Downloads/Chase0166_Activity_20190810_2.csv",header=T,sep=',')
+c$Posting.Date<-as.Date(c$Posting.Date,format="%m/%d/%Y")
+```
+
+#split the data into 2018 and 2019
+```{r}
+c_2018<-c[c$Posting.Date<"2019-01-01" ,]
+dim(c_2018)
+length(unique(c_2018$Posting.Date))
+c_2019<-c[c$Posting.Date>="2019-01-01" ,]
+dim(c_2019)
+length(unique(c_2019$Posting.Date))
+```
+
+#Did I do oil change more often?
+```{r}
+d<-"VIOC"
+print( paste("How many times have I visited ",d))
+length(c_2018[grepl(d,c_2018$Description),]$Description)
+length(c_2018[grepl(d,c_2018$Description),]$Description)/length(unique(c_2018$Posting.Date))
+length(c_2019[grepl(d,c_2019$Description),]$Description)
+length(c_2019[grepl(d,c_2019$Description),]$Description)/length(unique(c_2019$Posting.Date))
+```
+
+#Did I spend more on car insurance?
+```{r}
+cg<-c[grepl("GEICO",c$Description),] 
+plot(cg$Posting.Date,cg$Amount )
+```
