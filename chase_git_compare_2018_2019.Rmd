@@ -30,3 +30,22 @@ length(c_2019[grepl(d,c_2019$Description),]$Description)/length(unique(c_2019$Po
 cg<-c[grepl("GEICO",c$Description),] 
 plot(cg$Posting.Date,cg$Amount )
 ```
+
+
+#split the data into june/july 2018 vs. 2019
+```{r}
+c_201807<-c[c$Posting.Date>"2018-06-01" & c$Posting.Date<"2018-07-31" ,]
+
+
+c_201907<-c[c$Posting.Date>"2019-06-01" & c$Posting.Date<"2019-07-31" ,]
+
+```
+
+#drive more? (SHELL, EXXONMOBIL, gulf, SUNOCO, CITGO, CUMBERLAND, CIRCLE K)
+```{r}
+AA_201807<-c_201807[grepl("CUMBERLAND",c_201807$Description) | grepl("CIRCLE K",c_201807$Description) | grepl("SHELL",c_201807$Description) | grepl("EXXONMOBIL",c_201807$Description) | grepl("GULF",c_201807$Description) | grepl("CITGO",c_201807$Description) | grepl("SUNOCO",c_201807$Description),]
+AA_201807
+AA_201907<-c_201907[grepl("CUMBERLAND",c_201907$Description) |  grepl("CIRCLE K",c_201907$Description)| grepl("SHELL",c_201907$Description) | grepl("EXXONMOBIL",c_201907$Description)| grepl("GULF",c_201907$Description)| grepl("SUNOCO",c_201907$Description)| grepl("CITGO",c_201907$Description),]
+AA_201907
+```
+
