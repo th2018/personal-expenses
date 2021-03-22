@@ -1,0 +1,113 @@
+
+```{r}
+# R packages to be used
+library(forecast)
+library(xts)
+
+```
+
+#read the data
+```{r}
+c<-read.csv("/Users/owner/Downloads/Chase0166_Activity_20210321.CSV",header=T,sep=',' )
+c
+
+```
+
+#daily expense
+```{r}
+daily= aggregate(c$Balance ,
+                by = list( c$Posting.Date),
+                FUN = mean)
+daily$Group.1<-as.POSIXct(daily$Group.1,format="%m/%d/%Y")
+plot(daily$Group.1,daily$x )
+summary(c$Balance~c$Posting.Date)
+```
+
+
+#daily expense
+```{r}
+daily= aggregate(c$Amount  ,
+                by = list( c$Posting.Date),
+                FUN = sum)
+daily$Group.1<-as.POSIXct(daily$Group.1,format="%m/%d/%Y")
+plot(daily$Group.1, log( -daily$x)  )
+
+hist(daily$x)
+hist(daily[daily$Group.1 >="2021-01-01 MST",]$x)
+```
+
+
+<!-- #trend (working on it) -->
+<!-- ```{r} -->
+<!-- daily_ts<-ts(daily$x -->
+<!--            #  ,start=daily$Group.1[ length(daily$Group.1) ] -->
+<!--              ,start=1 -->
+<!--             # ,end =daily$Group.1[ 1 ] -->
+<!--            ,end=length(daily$Group.1) -->
+<!--              ,frequency=1) -->
+<!-- daily_ts -->
+
+<!-- daily_ts_HW<- HoltWinters(daily_ts, beta=FALSE, gamma=FALSE) -->
+<!-- plot(daily_ts_HW) -->
+<!-- ``` -->
+
+#WINCO
+```{r}
+
+print("How many times have I visited WINCO?")
+length(c[grepl("WINCO",c$Description),]$Description)
+WINCO<-c[grepl("WINCO",c$Description),]
+
+WINCO
+
+```
+
+#TRADER
+```{r}
+print("How many times have I visited WINCO?")
+length(c[grepl("TRADER",c$Description),]$Description)
+TRADER<-c[grepl("TRADER",c$Description),]
+
+TRADER
+```
+
+
+#AMK BSU SUB STARBUCKS BOISE ID
+```{r}
+print("How many times have I visited AMK BSU SUB STARBUCKS BOISE ID?")
+length(c[grepl("AMK BSU SUB STARBUCKS BOISE",c$Description),]$Description)
+BSU_STARBUCKS<-c[grepl("AMK BSU SUB STARBUCKS BOISE ID",c$Description),]
+
+BSU_STARBUCKS
+
+```
+
+
+#How many times have I visited Babette's Kitchen?
+```{r}
+
+
+print("How many times have I visited Babette's Kitchen?")
+length(c[grepl("BABETTE",c$Description),]$Description)
+
+```
+
+#How many times have I visited cafes (Babette's Kitchen and The Crafted Kup)?
+```{r}
+print("How many times have I visited cafes?")
+tck<-length(c[grepl("THE CRAFTED KUP",c$Description),]$Description)
+b<-length(c[grepl("BABETTE",c$Description),]$Description)
+
+print(tck+b)
+```
+
+
+#How often have I visited cafes (Babette's Kitchen and The Crafted Kup)?
+```{r}
+d<-as.POSIXct((c[1,]$Posting.Date),format="%m/%d/%Y")-as.POSIXct((c[length(c$Description),]$Posting.Date),format="%m/%d/%Y")
+dd<-as.numeric(d)/as.numeric(tck+b)
+dd
+```
+
+
+
